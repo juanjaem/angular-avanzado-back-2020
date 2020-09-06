@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-
+// Se encarga de conectarnos a la BBDD
 const dbConnection = async() => {
     try {
         await mongoose.connect(process.env.DB_CNN, {

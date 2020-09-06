@@ -8,10 +8,16 @@ const {dbConnection} = require('./database/config'); // Las llaves son para dese
 // Crear el servidor de express
 const app = express();
 
-app.use(cors()); // Middleware. Enable All CORS Requests
+app.use( cors() ); // Middleware. Enable All CORS Requests
 
-// Base de datos
-dbConnection();
+app.use( express.json() ); // Lectura y parseo del body
+
+dbConnection(); // Conectar a la BBDD
+
+
+// Rutas
+app.use('/api/usuarios', require('./routes/usuarios'));
+app.use('/api/login', require('./routes/auth'));
 
 
 app.listen(process.env.PORT, () => {
