@@ -5,12 +5,19 @@ const bcrypt = require('bcryptjs');
 const Usuario = require('../models/usuario');
 
 const getUsuarios = async(req, res) => {
-    const usuarios = await Usuario.find({}, 'nombre email role google'); // Solo devuelve los campos especificados
+    const desde = Number(req.query.desde) || 0; // Si no se manda número, será 0
+
+    // PROMISE.ALL -> Para que se ejecuten todos los querys simultaneamente (son asincronos), y espere a que terminen todos
+    // Los resultados se meten en el array en el orden elegido
+    const [usuarios, total] = await Promise.all([
+        Usuario.find({}, 'nombre email role google img').skip(desde).limit(5), // funcion asíncrona 1
+        Usuario.countDocuments()                                                    // funcion asíncrona 2
+    ]);
 
     res.json({
         ok: true,
         usuarios,
-        uid: req.uid
+        total
     });
 };
 
