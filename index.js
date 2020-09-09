@@ -14,6 +14,8 @@ app.use( express.json() ); // Lectura y parseo del body
 
 dbConnection(); // Conectar a la BBDD
 
+// Directorio público
+app.use(express.static('public'));
 
 // Rutas
 app.use('/api/usuarios', require('./routes/usuarios'));
