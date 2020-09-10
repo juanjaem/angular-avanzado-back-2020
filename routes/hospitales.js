@@ -29,14 +29,16 @@ router.post('/',
 // OBTENER USUARIOS
 router.put('/:id',
     [
-        validarJWT
+        validarJWT,
+        check('nombre', 'El nombre del hospital es necesario').not().isEmpty(),
+        validarCampos
     ],
     actualizarHospital
  );
 
 
  // BORRAR USUARIOS
-router.delete('/:id', borrarHospital);
+router.delete('/:id', validarJWT, borrarHospital);
 
 
 module.exports = router;

@@ -91,7 +91,23 @@ const gogleSignIn = async(req, res = response) => {
 };
 
 
+// Devuelve un nuevo token, utilizando uno viejo para autenticar. Si el token viejo está expirado, no podrá
+// entrar aquí
+const renewToken = async(req, res = response) => {
+    const uid = req.uid;
+
+    // Generar token
+    const token = await generarJWT(uid);
+
+    res.json({
+        ok: true,
+        token
+    });
+};
+
+
 module.exports = {
     login,
-    gogleSignIn
+    gogleSignIn,
+    renewToken
 };

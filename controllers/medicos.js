@@ -21,7 +21,6 @@ const crarMedico = async(req, res = response) => {
     
     try {
         const hospital = await Hospital.findById(hospital_id);
-
         if (!hospital) {
             return res.status(400).json({
                 ok: false,
@@ -50,18 +49,73 @@ const crarMedico = async(req, res = response) => {
     }
 };
 
-const actualizarMedico = (req, res = response) => {
-    res.json({
-        ok: true,
-        msg: 'actualizarMedico'
-    });
+const actualizarMedico = async(req, res = response) => {
+    const medico_id = req.params.id; // ID del medico que actualizar
+    const hospital_id = req.body.hospital; // ID del hospital al que debe pertenecer el médico
+    const uid = req.uid; // ID del usuario que hace la peticion
+
+    try {
+        const hospital = await Hospital.findById(hospital_id);
+        if (!hospital) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'El ID del hospital indicado no es válido'
+            });
+        }
+
+        const medico = await Medico.findById(medico_id);
+        if (!medico) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'El ID del medico indicado no es válido'
+            });
+        }
+
+        medico.nombre = req.body.nombre;
+        medico.hospital = hospital_id;
+        medico.usuario = uid;
+
+        const medicoActualizado = await Medico.findByIdAndUpdate(medico_id, medico, {new: true});
+    
+        res.json({
+            ok: true,
+            medico: medicoActualizado
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador'
+        });
+    }
 };
 
-const borrarMedico = (req, res = response) => {
-    res.json({
-        ok: true,
-        msg: 'borrarMedico'
-    });
+
+const borrarMedico = async(req, res = response) => {
+    const medico_id = req.params.id; // ID del medico a borrar
+
+    try {
+        const medico = await Medico.findById(medico_id);
+        if (!medico) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'El ID del medico indicado no es válido'
+            });
+        }
+
+        await Medico.findByIdAndDelete(medico_id);
+    
+        res.json({
+            ok: true,
+            msg: 'El médico ha sido borrado correctamente'
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador'
+        });
+    }
 };
 
 
