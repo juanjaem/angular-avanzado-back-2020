@@ -32,7 +32,8 @@ const login = async(req, res = response) => {
         
         res.json({
            ok: true,
-           token
+           token,
+           usuarioDB
         });
     } catch (error) {
         console.log(error);
@@ -99,9 +100,13 @@ const renewToken = async(req, res = response) => {
     // Generar token
     const token = await generarJWT(uid);
 
+    // Cargar datos del usuario
+    const usuario = await Usuario.findById(uid);
+
     res.json({
         ok: true,
-        token
+        token,
+        usuario
     });
 };
 
