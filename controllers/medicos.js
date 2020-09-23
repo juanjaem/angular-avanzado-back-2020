@@ -15,6 +15,28 @@ const getMedicos = async(req, res = response) => {
 };
 
 
+const getMedicoById = async(req, res = response) => {
+    const id = req.params.id;
+
+    try {
+        const medico = await Medico.findById(id)
+                                    .populate('usuario', 'nombre img')
+                                    .populate('hospital', 'nombre img');
+
+        res.json({
+            ok: true,
+            medico
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            ok: false,
+            msg: 'Error inesperado, hable con el administrador'
+        });
+    }
+};
+
+
 const crarMedico = async(req, res = response) => {
     const uid = req.uid; // El middleware metió esto aquí
     const hospital_id = req.body.hospital_id;
@@ -48,6 +70,7 @@ const crarMedico = async(req, res = response) => {
         });
     }
 };
+
 
 const actualizarMedico = async(req, res = response) => {
     const medico_id = req.params.id; // ID del medico que actualizar
@@ -123,5 +146,6 @@ module.exports = {
     getMedicos,
     crarMedico,
     actualizarMedico,
-    borrarMedico 
+    borrarMedico,
+    getMedicoById
 };
