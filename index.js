@@ -1,4 +1,6 @@
-require('dotenv').config(); // Añadimos a las variables globales de node las que se encuentran en el fichero ".env"
+ //El plugin 'dotenb' se encarga de meter en las variables globales lo que definamos en el fichero .env
+ //Al subirlo a Heroku, la variable global PORT la sobreescribirá el servidor, utilizando la que necesita
+require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
