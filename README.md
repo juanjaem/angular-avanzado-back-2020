@@ -13,7 +13,7 @@
 
 
 ### Despliegue en Heroku
-1. Compilar la webApp de Angular con `ng build`
+1. Compilar la webApp de Angular con `ng build --prod`
 2. Mover los archivos generados en `dist/adminpro/` a la carpeta del proyecto de backend `public/`
 3. Desplegar al servidor utilizando *Heroku CLI*
 
